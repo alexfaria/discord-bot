@@ -1,0 +1,9 @@
+{
+  "token": "TOKEN",
+  "clientID": "ID OF YOUR BOT",
+  "prefix": "!",
+  "ownerID": "YOUR ID",
+  "modRoleID": "ID OF THE MOD ROLE",
+  "imgurID": "imgur api token",
+  "googleAPI" : "google api token"
+}
