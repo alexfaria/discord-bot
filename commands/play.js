@@ -22,9 +22,12 @@ exports.run = (client, message, args) => {
         request(endpoint + `?q=${args.join(' ')}&part=snippet&key=${client.config.googleAPI}`, (error, response, body) => {
             if (!error && response.statusCode === 200) {
                 const result = JSON.parse(body);
-                console.dir(result.items[0].id.videoId);
+                const videoId = result.items[0].id.videoId;
+                const title = result.items[0].snippet.title;
 
-                const link = youtube + result.items[0].id.videoId;
+                console.dir(`Playing ${title} (${videoId})`);
+
+                const link = youtube + videoId;
                 vchannel.join()
                     .then((connection) => {
                         const stream = ytdl(link, { audioonly: true });
