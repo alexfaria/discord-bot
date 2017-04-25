@@ -27,7 +27,7 @@ client.on("message", message => {
   
   try {
     let commandFile = require(`./commands/${command}.js`);
-    console.log(`[command]: '${command}' issued by ${message.author.username}`);
+    console.log(`[command]: '${command}' - ${message.author.username}`);
     commandFile.run(client, message, args);
   } catch (err) {
     if(err == 'ProcessExit') process.exit();
@@ -37,9 +37,9 @@ client.on("message", message => {
 
 client.login(config.token);
 
-client.on('error', (e) => console.error(e));
-client.on('warn', (e) => console.warn(e));
-client.on('debug', (e) => console.info(e));
+// client.on('error', (e) => console.error(e));
+// client.on('warn', (e) => console.warn(e));
+// client.on('debug', (e) => console.info(e));
 
 let events = Object.values(require('discord.js/src/util/Constants.js').Events);
 events.splice(events.indexOf('debug'),1 );
@@ -47,7 +47,7 @@ events.splice(events.indexOf('ready'),1 );
 
 
 for(let event of events)
-  client.on(event, () => console.log(`[${event}]`));
+  client.on(event, () => console.log(`[event]: ${event}`));
 
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: \n" + err.stack);
