@@ -1,5 +1,4 @@
 const ytdl = require('ytdl-core');
-const fs = require('fs');
 const request = require('request');
 const endpoint = "https://www.googleapis.com/youtube/v3/search";
 const youtube = "https://www.youtube.com/watch?v=";
@@ -9,28 +8,35 @@ exports.run = (client, message, args) => {
     const vchannel = message.member.voiceChannel;
     if (!vchannel) return channel.sendMessage('You must be in a voice channel.');
     
-    request(endpoint + `?q=${args.join(' ')}&part=snippet&key=${client.config.googleAPI}`, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-            const result = JSON.parse(body);
-            console.dir(result.items[0].id.videoId);
-            
-            const link = youtube + result.items[0].id.videoId;
-            
-            ytdl(link, { audioonly: true })
-            .pipe(fs.createWriteStream('./cache/cache.mp3'))
-            .on('finish', () => {
+    if(validURL(args[0])){
+        vchannel.join()
+        .then((connection) => {
+            const stream = ytdl(args[0], { audioonly: true });
+            const dispatcher = connection.playStream(stream);
+            dispatcher.setVolume(0.1);
+            dispatcher.on('end', () => vchannel.leave());
+        })
+        .catch(console.log);
+    }
+    else{
+        request(endpoint + `?q=${args.join(' ')}&part=snippet&key=${client.config.googleAPI}`, (error, response, body) => {
+            if (!error && response.statusCode === 200) {
+                const result = JSON.parse(body);
+                console.dir(result.items[0].id.videoId);
+
+                const link = youtube + result.items[0].id.videoId;
                 vchannel.join()
-                .then((connection) => {
-                    console.log('[play] finished download');
-                    const dispatcher = connection.playFile('./cache/cache.mp3');
-                    dispatcher.setVolume(0.1);
-                    dispatcher.on('end', () => vchannel.leave());
-                })
-                .catch(console.log);
-            })
-        }
-    })
-}   
+                    .then((connection) => {
+                        const stream = ytdl(link, { audioonly: true });
+                        const dispatcher = connection.playStream(stream);
+                        dispatcher.setVolume(0.1);
+                        dispatcher.on('end', () => vchannel.leave());
+                    })
+                    .catch(console.log);
+            }
+        })
+    }   
+}
 
 
 function validURL(s) {
