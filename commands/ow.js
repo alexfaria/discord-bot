@@ -6,6 +6,11 @@ exports.run = (client, message, arg) => {
         .then((data) => {
             console.dir(data);
         })
+    owjs.search('SadMoustache-2212')
+        .then((data) => console.dir(data, {
+            depth: 2,
+            colors: true
+        }));
 }
 
 exports.help = "Get overwatch data.";
