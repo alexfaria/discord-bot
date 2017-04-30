@@ -28,10 +28,8 @@ exports.run = (client, message, args) => {
                 const result = JSON.parse(body);
                 const videoId = result.items[0].id.videoId;
                 const title = result.items[0].snippet.title;
-
-                console.dir(`Playing ${title} (${videoId})`);
-
                 const link = youtube + videoId;
+
                 vchannel
                     .join()
                     .then((connection) => {
@@ -40,6 +38,8 @@ exports.run = (client, message, args) => {
                         });
                         const dispatcher = connection.playStream(stream);
                         dispatcher.setVolume(0.1);
+                        console.dir(`[command:play] Playing ${title} (${videoId})`);
+                        message.channel.sendMessage(`Playing ${title}`);
                         dispatcher.on('end', () => vchannel.leave());
                     })
                     .catch(console.log);
