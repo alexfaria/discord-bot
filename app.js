@@ -41,13 +41,12 @@ client.login(config.token);
 // client.on('warn', (e) => console.warn(e));
 // client.on('debug', (e) => console.info(e));
 
-let events = Object.values(require('discord.js/src/util/Constants.js').Events);
-events.splice(events.indexOf('debug'),1 );
-events.splice(events.indexOf('ready'),1 );
+// let events = Object.values(require('discord.js/src/util/Constants.js').Events);
+// events.splice(events.indexOf('debug'),1 );
+// events.splice(events.indexOf('ready'),1 );
 
-
-for(let event of events)
-  client.on(event, () => console.log(`[event]: ${event}`));
+// for(let event of events)
+//   client.on(event, () => console.log(`[event]: ${event}`));
 
 process.on("unhandledRejection", err => {
   console.error("Uncaught Promise Error: \n" + err.stack);
