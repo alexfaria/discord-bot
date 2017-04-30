@@ -6,9 +6,14 @@ const youtube = "https://www.youtube.com/watch?v=";
 exports.run = (client, message, args) => {
     if (!args || args.length < 1)
         return message.channel.sendMessage(`Must provide a link or a song name`);
+
     const vchannel = message.member.voiceChannel;
     if (!vchannel)
         return channel.sendMessage('You must be in a voice channel.');
+
+    const vcon = client.voiceConnections.get(message.guild.id);
+    if (vcon && vcon.channel)
+        return message.channel.sendMessage(`A song is already playing. Please add to the queue instead`);
 
     if (validURL(args[0])) {
         vchannel
