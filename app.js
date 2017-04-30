@@ -21,16 +21,16 @@ client.on("message", message => {
   if (!message.content.startsWith(config.prefix)) return;
   let command = message.content.split(" ")[0];
   command = command.slice(config.prefix.length);
-  
+
   let args = message.content.split(" ").slice(1);
   // The list of if/else is replaced with those simple 2 lines:
-  
+
   try {
     let commandFile = require(`./commands/${command}.js`);
     console.log(`[command]: '${command}' - ${message.author.username}`);
     commandFile.run(client, message, args);
   } catch (err) {
-    if(err == 'ProcessExit') process.exit();
+    if (err == 'ProcessExit') process.exit();
     console.error(err);
   }
 });

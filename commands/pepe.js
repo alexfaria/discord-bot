@@ -8,7 +8,7 @@ exports.run = (client, message, args) => {
       message.channel.stopTyping();
     })
     .catch(console.log);
-  
+
 }
 
 function getPepePromise(auth) {

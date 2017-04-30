@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 exports.run = (client, message, args) => {
-    if (args[0] == "list"){
+    if (args[0] == "list") {
         let mp3s = [];
         fs.readdir("./mp3/", (err, files) => {
             if (err) return console.error(err);
@@ -16,13 +16,13 @@ exports.run = (client, message, args) => {
     const vchannel = message.member.voiceChannel;
     if (!vchannel) return channel.sendMessage('You must be in a voice channel.')
     console.log(message.guild.voiceConnection);
-    if(!message.guild.voiceConnection) {
+    if (!message.guild.voiceConnection) {
         vchannel.join()
-        .then((connection) => {
-            const dispatcher = connection.playFile(`./mp3/${args[0]}.mp3`);
-            dispatcher.on('end', () => vchannel.leave());
-        })
-        .catch(err => console.log(err));
+            .then((connection) => {
+                const dispatcher = connection.playFile(`./mp3/${args[0]}.mp3`);
+                dispatcher.on('end', () => vchannel.leave());
+            })
+            .catch(err => console.log(err));
     }
 }
 

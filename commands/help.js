@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
       } catch (e) {
         console.log(e);
       }
-      string += "\n**" + client.config.prefix + file.slice(0,-3) + "** :" +  help;
+      string += "\n**" + client.config.prefix + file.slice(0, -3) + "** :" + help;
     });
     // message.channel.sendMessage("Sent you a DM with the help page :clipboard:");
     message.channel.sendMessage(string).then();
