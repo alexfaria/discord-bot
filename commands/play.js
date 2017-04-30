@@ -4,17 +4,19 @@ const endpoint = "https://www.googleapis.com/youtube/v3/search";
 const youtube = "https://www.youtube.com/watch?v=";
 
 exports.run = (client, message, args) => {
-    if (!args || args.length < 1) 
+    if (!args || args.length < 1)
         return message.channel.sendMessage(`Must provide a link.`);
     const vchannel = message.member.voiceChannel;
-    if (!vchannel) 
+    if (!vchannel)
         return channel.sendMessage('You must be in a voice channel.');
-    
+
     if (validURL(args[0])) {
         vchannel
             .join()
             .then((connection) => {
-                const stream = ytdl(args[0], {audioonly: true});
+                const stream = ytdl(args[0], {
+                    audioonly: true
+                });
                 const dispatcher = connection.playStream(stream);
                 dispatcher.setVolume(0.1);
                 dispatcher.on('end', () => vchannel.leave());
@@ -33,7 +35,9 @@ exports.run = (client, message, args) => {
                 vchannel
                     .join()
                     .then((connection) => {
-                        const stream = ytdl(link, {audioonly: true});
+                        const stream = ytdl(link, {
+                            audioonly: true
+                        });
                         const dispatcher = connection.playStream(stream);
                         dispatcher.setVolume(0.1);
                         dispatcher.on('end', () => vchannel.leave());
