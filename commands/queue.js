@@ -9,13 +9,14 @@ exports.run = (client, message, args) => {
 
     request(endpoint + `&key=${client.config.googleAPI}&q=${args.join(' ')}`, (error, response, body) => {
         if (!error && response.statusCode === 200) {
+            const result = JSON.parse(body);
             const videoId = result.items[0].id.videoId;
             const title = result.items[0].snippet.title;
             const link = youtube + videoId;
 
             if (!client.queue[message.guild])
                 client.queue[message.guild] = []
-            client.queue[message.guild].push({title, url});
+            client.queue[message.guild].push({title, link});
 
 
             console.dir(client.queue[message.guild]);
