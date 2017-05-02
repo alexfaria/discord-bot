@@ -28,7 +28,7 @@ exports.run = (client, message, args) => {
             }
         });
     } else if (args[0] === "list") {
-        let content = "";
+        let content = "\n";
         for (let i in client.queue[message.guild]) {
             content = content + client.queue[message.guild][i].title + "\n";
         }
