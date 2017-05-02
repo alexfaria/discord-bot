@@ -75,7 +75,8 @@ function play(client, message, vchannel, song) {
             console.dir(`[command:play] Playing ${song.title}`);
             message.channel.send(`Playing ${song.title}`);
             dispatcher.on('end', () => {
-                if (Object.keys(client.queue[message.guild]).length === 0){
+                console.dir(client.queue[message.guild]);
+                if (!client.queue[message.guild] || Object.keys(client.queue[message.guild]).length === 0){
                     message.channel.send("Queue is empty. Leaving channel");
                     return vchannel.leave();   
                 }
