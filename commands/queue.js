@@ -5,7 +5,7 @@ const youtube = `https://www.youtube.com/watch?v=`;
 exports.run = (client, message, args) => {
 
     if (!args || args.length < 1)
-        return message.channel.send('Must provide a command: either `add <url>` or `list` ');
+        return message.channel.send('Must provide a valid command: either `add <url>` or `list` ');
 
     if (args[0] === "add") {
         if (args.length < 2)
@@ -33,6 +33,8 @@ exports.run = (client, message, args) => {
             content = content + client.queue[message.guild][i].title + "\n";
         }
         message.channel.send(`\`\`\`${content}\`\`\``);
+    } else {
+        return message.channel.send('Must provide a valid command: either `add <url>` or `list` ');
     }
 
 
