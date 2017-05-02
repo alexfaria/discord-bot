@@ -28,11 +28,11 @@ exports.run = (client, message, args) => {
             }
         });
     } else if (args[0] === "list") {
-        let message = "";
+        let content = "";
         for (let song in client.queue[message.guild]) {
-            message = message + song + "\n";
+            content = content + song + "\n";
         }
-        message.channel.send(`\`\`\`${message}\`\`\``);
+        message.channel.send(`\`\`\`${content}\`\`\``);
     }
 
 
