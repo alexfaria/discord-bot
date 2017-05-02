@@ -12,9 +12,9 @@ exports.run = (client, message, args) => {
         });
     }
 
-    if (!args) return message.channel.sendMessage(`Must provide a sound name.`);
+    if (!args) return message.channel.send(`Must provide a sound name.`);
     const vchannel = message.member.voiceChannel;
-    if (!vchannel) return channel.sendMessage('You must be in a voice channel.')
+    if (!vchannel) return channel.send('You must be in a voice channel.')
     console.log(message.guild.voiceConnection);
     if (!message.guild.voiceConnection) {
         vchannel.join()

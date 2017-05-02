@@ -14,8 +14,8 @@ exports.run = (client, message, args) => {
       }
       string += "\n**" + client.config.prefix + file.slice(0, -3) + "** :" + help;
     });
-    // message.channel.sendMessage("Sent you a DM with the help page :clipboard:");
-    message.channel.sendMessage(string).then();
+    // message.channel.send("Sent you a DM with the help page :clipboard:");
+    message.channel.send(string).then();
   });
 }
 

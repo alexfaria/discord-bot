@@ -7,7 +7,7 @@ exports.run = (client, message, args) => {
             const result = JSON.parse(body);
             const n = Math.floor(Math.random() * result.length);
             const quote = result[n].quote_content;
-            message.channel.sendMessage(quote);
+            message.channel.send(quote);
             message.channel.stopTyping();
         }
     });

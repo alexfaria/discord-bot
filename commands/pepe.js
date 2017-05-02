@@ -4,7 +4,7 @@ exports.run = (client, message, args) => {
   message.channel.startTyping();
   getPepePromise(client.config.imgurID)
     .then(url => {
-      message.channel.sendMessage(url);
+      message.channel.send(url);
       message.channel.stopTyping();
     })
     .catch(console.log);

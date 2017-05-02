@@ -9,20 +9,20 @@ exports.run = (client, message, args) => {
         for (const meme in result) {
           arr.push(result[meme].substring(result[meme].lastIndexOf('/') + 1));
         }
-        message.channel.sendMessage(`Available memes: ${arr.join(', ')}`);
+        message.channel.send(`Available memes: ${arr.join(', ')}`);
       }
     });
   } else {
     let params = args.join(' ').split("|");
     if (params.length !== 3) {
-      message.channel.sendMessage('` meme <meme> | top text | bottom text ` or ` meme list `');
+      message.channel.send('` meme <meme> | top text | bottom text ` or ` meme list `');
       return;
     }
     for (let i = 0; i < 3; i += 1) {
       params[i] = params[i].replace(/^[ ]+|[ ]+$/g, '').split(' ').join('-');
     }
     const image = `http://memegen.link/${params[0]}/${params[1]}/${params[2]}.jpg`;
-    message.channel.sendMessage(image);
+    message.channel.send(image);
   }
 }
 

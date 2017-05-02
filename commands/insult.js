@@ -8,8 +8,8 @@ exports.run = (client, message, args) => {
         if (!error && response.statusCode === 200) {
             const insult = cheerio.load(body)('div.wrap').text();
             if (params[0] === 'me') msg.reply(insult);
-            if (msg.mentions.users.first()) channel.sendMessage(msg.mentions.users.first() + insult);
-            else channel.sendMessage(insult).then(channel.stopTyping());
+            if (msg.mentions.users.first()) channel.send(msg.mentions.users.first() + insult);
+            else channel.send(insult).then(channel.stopTyping());
         }
     });
 }

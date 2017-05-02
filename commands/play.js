@@ -5,15 +5,15 @@ const youtube = "https://www.youtube.com/watch?v=";
 
 exports.run = (client, message, args) => {
     if (!args || args.length < 1)
-        return message.channel.sendMessage(`Must provide a link or a song name`);
+        return message.channel.send(`Must provide a link or a song name`);
 
     const vchannel = message.member.voiceChannel;
     if (!vchannel)
-        return message.channel.sendMessage('You must be in a voice channel.');
+        return message.channel.send('You must be in a voice channel.');
 
     const vcon = client.voiceConnections.get(message.guild.id);
     if (vcon && vcon.channel)
-        return message.channel.sendMessage(`A song is already playing. Please add to the queue instead`);
+        return message.channel.send(`A song is already playing. Please add to the queue instead`);
 
     if (validURL(args[0])) {
         vchannel
@@ -51,7 +51,7 @@ exports.run = (client, message, args) => {
                 //         const dispatcher = connection.playStream(stream);
                 //         dispatcher.setVolume(0.1);
                 //         console.dir(`[command:play] Playing ${title} (${videoId})`);
-                //         message.channel.sendMessage(`Playing ${title}`);
+                //         message.channel.send(`Playing ${title}`);
                 //         dispatcher.on('end', () => {
                 //             const song = client.queue[message.guild].pop();
                 //             vchannel.leave()
@@ -73,7 +73,7 @@ function play(client, message, vchannel, song) {
             const dispatcher = connection.playStream(stream);
             dispatcher.setVolume(0.1);
             console.dir(`[command:play] Playing ${song.title}`);
-            message.channel.sendMessage(`Playing ${song.title}`);
+            message.channel.send(`Playing ${song.title}`);
             dispatcher.on('end', () => {
                 if (Object.keys(client.queue[message.guild]).length === 0)
                     return;    
