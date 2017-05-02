@@ -76,7 +76,7 @@ function play(client, message, vchannel, song) {
             message.channel.send(`Playing ${song.title}`);
             dispatcher.on('end', () => {
                 if (Object.keys(client.queue[message.guild]).length === 0)
-                    return;    
+                    return vchannel.leave();    
                 song = client.queue[message.guild].pop();
                 play(client, message, vchannel, song);
             });
