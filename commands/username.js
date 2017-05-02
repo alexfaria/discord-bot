@@ -3,13 +3,15 @@ exports.run = (client, message, args) => {
     if (!(message.member.roles.has(role.id) || message.author.id == client.config.ownerID))
         return message.channel.send(`Only members with the role ${role} may use it.`);
 
-    const argument = message.content.substr(client.config.prefix.length + 'username'.length);
+    const argument = message.content.substr(client.config.prefix.length + 'username'.length + 1);
 
     if (validURL(argument)) {
+        console.log("Setting a new avatar");
         client.user.setAvatar(argument)
             .then(user => console.log(`New avatar set!`))
             .catch(console.error);
     } else {
+        console.log("Setting a new username");
         client.user.setUsername(argument);
     }
 }
