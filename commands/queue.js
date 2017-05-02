@@ -32,9 +32,7 @@ exports.run = (client, message, args) => {
         for (let song in client.queue[message.guild]) {
             message = message + song + "\n";
         }
-        message.channel.send(message, { 
-            code: true
-        });
+        message.channel.send(`\`\`\`${message}\`\`\``);
     }
 
 
