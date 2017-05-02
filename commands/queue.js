@@ -29,8 +29,8 @@ exports.run = (client, message, args) => {
         });
     } else if (args[0] === "list") {
         let content = "";
-        for (let song in client.queue[message.guild]) {
-            content = content + song + "\n";
+        for (let i in client.queue[message.guild]) {
+            content = content + client.queue[message.guild][i].title + "\n";
         }
         message.channel.send(`\`\`\`${content}\`\`\``);
     }
