@@ -35,23 +35,55 @@ exports.run = (client, message, args) => {
                 const title = result.items[0].snippet.title;
                 const link = youtube + videoId;
 
-                vchannel
-                    .join()
-                    .then((connection) => {
-                        const stream = ytdl(link, {
-                            audioonly: true
-                        });
-                        const dispatcher = connection.playStream(stream);
-                        dispatcher.setVolume(0.1);
-                        console.dir(`[command:play] Playing ${title} (${videoId})`);
-                        message.channel.sendMessage(`Playing ${title}`);
-                        dispatcher.on('end', () => vchannel.leave());
-                    })
-                    .catch(console.log);
+                const song = {
+                    title,
+                    link
+                }
+
+                play(client, message, vchannel, song);
+
+                // vchannel
+                //     .join()
+                //     .then((connection) => {
+                //         const stream = ytdl(link, {
+                //             audioonly: true
+                //         });
+                //         const dispatcher = connection.playStream(stream);
+                //         dispatcher.setVolume(0.1);
+                //         console.dir(`[command:play] Playing ${title} (${videoId})`);
+                //         message.channel.sendMessage(`Playing ${title}`);
+                //         dispatcher.on('end', () => {
+                //             const song = client.queue[message.guild].pop();
+                //             vchannel.leave()
+                //         });
+                //     })
+                //     .catch(console.log);
             }
         })
     }
 }
+
+function play(client, message, vchannel, song) {
+    vchannel
+        .join()
+        .then((connection) => {
+            const stream = ytdl(song.link, {
+                audioonly: true
+            });
+            const dispatcher = connection.playStream(stream);
+            dispatcher.setVolume(0.1);
+            console.dir(`[command:play] Playing ${song.title}`);
+            message.channel.sendMessage(`Playing ${song.title}`);
+            dispatcher.on('end', () => {
+                if (Object.keys(client.queue[message.guild]).length === 0)
+                    return;    
+                song = client.queue[message.guild].pop();
+                play(client, message, vchannel, song);
+            });
+        })
+        .catch(console.log);
+}
+
 
 function validURL(s) {
     var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
