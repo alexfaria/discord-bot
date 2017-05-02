@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core');
 const request = require('request');
-const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet&key=${client.config.googleAPI}`;
+const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet`;
 const youtube = "https://www.youtube.com/watch?v=";
 
 exports.run = (client, message, args) => {
@@ -9,7 +9,7 @@ exports.run = (client, message, args) => {
 
     const vchannel = message.member.voiceChannel;
     if (!vchannel)
-        return channel.sendMessage('You must be in a voice channel.');
+        return message.channel.sendMessage('You must be in a voice channel.');
 
     const vcon = client.voiceConnections.get(message.guild.id);
     if (vcon && vcon.channel)
@@ -28,7 +28,7 @@ exports.run = (client, message, args) => {
             })
             .catch(console.log);
     } else {
-        request(endpoint + `&q=${args.join(' ')}`, (error, response, body) => {
+        request(endpoint + `&key=${client.config.googleAPI}&q=${args.join(' ')}`, (error, response, body) => {
             if (!error && response.statusCode === 200) {
                 const result = JSON.parse(body);
                 const videoId = result.items[0].id.videoId;
