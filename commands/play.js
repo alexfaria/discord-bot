@@ -12,8 +12,17 @@ exports.run = (client, message, args) => {
         return message.channel.send('You must be in a voice channel.');
 
     const vcon = client.voiceConnections.get(message.guild.id);
-    if (vcon && vcon.channel)
-        return message.channel.send(`A song is already playing. Please add to the queue instead.`);
+    if (vcon && vcon.channel) {
+        try {
+            let commandFile = require(`./commands/${command}.js`);
+            let queueArgs = ['add', args[0]];
+            commandFile.run(client, message, queueArgs);
+            // return message.channel.send(`A song is already playing. Please add to the queue instead.`);
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
 
     request(endpoint + `&key=${client.config.googleAPI}&q=${args.join(' ')}`, (error, response, body) => {
         if (!error && response.statusCode === 200) {
