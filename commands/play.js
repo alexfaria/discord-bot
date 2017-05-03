@@ -28,21 +28,22 @@ exports.run = (client, message, args) => {
 
             client.queue[message.guild].push(song);
 
-            play(client.queue[message.guild], message, vchannel, song);
+            play(client.queue[message.guild], message, vchannel);
         }
     })
 }
 
-function play(queue, message, vchannel, song) {
+function play(queue, message, vchannel) {
     vchannel
         .join()
         .then((connection) => {
+            const song = queue.pop();
             const stream = ytdl(song.link, {
                 audioonly: true
             });
             const dispatcher = connection.playStream(stream);
             dispatcher.setVolume(0.1);
-            console.dir(`[command:play] Playing ${song.title}`);
+            console.log(`[command:play] Playing ${song.title}`);
             message.channel.send(`Playing ${song.title}`);
             dispatcher.on('end', () => {
                 console.dir(queue);
@@ -50,8 +51,7 @@ function play(queue, message, vchannel, song) {
                     message.channel.send("Queue is empty. Leaving channel");
                     return vchannel.leave();
                 }
-                song = queue.pop();
-                play(queue, message, vchannel, song);
+                play(queue, message, vchannel);
             });
         })
         .catch(console.log);
