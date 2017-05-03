@@ -7,6 +7,8 @@ exports.run = (client, message, args) => {
     if (!args || args.length < 1)
         return message.channel.send('Must provide a valid command: either `add <url>` or `list` ');
 
+    let queue = client.queue[message.guild];
+
     if (args[0] === "add") {
         if (args.length < 2)
             return message.channel.send(`Must provide a song name`);
@@ -18,19 +20,27 @@ exports.run = (client, message, args) => {
                 const title = result.items[0].snippet.title;
                 const link = youtube + videoId;
 
-                client.queue[message.guild].push({
+                queue.push({
                     title,
                     link
                 });
-                console.dir(client.queue[message.guild]);
+                console.dir(queue);
             }
         });
     } else if (args[0] === "list") {
         let content = "\n";
-        for (let i in client.queue[message.guild]) {
-            content = content + client.queue[message.guild][i].title + "\n";
+        for (let i in queue) {
+            content += `[${i}]: ${queue[i].title}\n`;
         }
-        message.channel.send(`\`\`\`${content}\`\`\``);
+        message.channel.send(`\`\`\`asciidoc${content}\`\`\``);
+    } else if (args[0] === "rm") {
+        if (args.length < 2)
+            return message.channel.send(`Must provide an index of the queue to remove.`);
+
+        queue.splice(args[1], 1);
+
+    } else if (args[0] === "clear") {
+        queue.splice(0, queue.length);
     } else {
         return message.channel.send('Must provide a valid command: either `add <url>` or `list` ');
     }
