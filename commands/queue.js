@@ -18,8 +18,6 @@ exports.run = (client, message, args) => {
                 const title = result.items[0].snippet.title;
                 const link = youtube + videoId;
 
-                if (!client.queue[message.guild])
-                    client.queue[message.guild] = []
                 client.queue[message.guild].push({
                     title,
                     link
