@@ -28,6 +28,8 @@ exports.run = (client, message, args) => {
             }
         });
     } else if (args[0] === "list") {
+        if (queue.length < 1)
+            return message.channel.send(`Queue is empty.`);
         let content = "\n";
         for (let i in queue) {
             content += `[${i}]: ${queue[i].title}\n`;
@@ -36,11 +38,11 @@ exports.run = (client, message, args) => {
     } else if (args[0] === "rm") {
         if (args.length < 2)
             return message.channel.send(`Must provide an index of the queue to remove.`);
-
         queue.splice(args[1], 1);
 
     } else if (args[0] === "clear") {
         queue.splice(0, queue.length);
+        message.channel.send("Cleared the queue");
     } else {
         return message.channel.send('Must provide a valid command: either `add <url>` or `list` ');
     }
