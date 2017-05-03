@@ -15,12 +15,13 @@ exports.run = (client, message, args) => {
     if (vcon && vcon.channel) {
         try {
             let commandFile = require(`./queue.js`);
-            let queueArgs = ['add', args[0]];
+            let queueArgs = ['add'].concat(args);
             commandFile.run(client, message, queueArgs);
             // return message.channel.send(`A song is already playing. Please add to the queue instead.`);
         } catch (err) {
             console.error(err);
         }
+        return;
     }
 
 
