@@ -14,7 +14,7 @@ exports.run = (client, message, args) => {
     const vcon = client.voiceConnections.get(message.guild.id);
     if (vcon && vcon.channel) {
         try {
-            let commandFile = require(`./commands/${command}.js`);
+            let commandFile = require(`./commands/queue.js`);
             let queueArgs = ['add', args[0]];
             commandFile.run(client, message, queueArgs);
             // return message.channel.send(`A song is already playing. Please add to the queue instead.`);
