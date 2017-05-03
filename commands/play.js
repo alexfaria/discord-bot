@@ -13,57 +13,27 @@ exports.run = (client, message, args) => {
 
     const vcon = client.voiceConnections.get(message.guild.id);
     if (vcon && vcon.channel)
-        return message.channel.send(`A song is already playing. Please add to the queue instead`);
+        return message.channel.send(`A song is already playing. Please add to the queue instead.`);
 
-    if (validURL(args[0])) {
-        vchannel
-            .join()
-            .then((connection) => {
-                const stream = ytdl(args[0], {
-                    audioonly: true
-                });
-                const dispatcher = connection.playStream(stream);
-                dispatcher.setVolume(0.1);
-                dispatcher.on('end', () => vchannel.leave());
-            })
-            .catch(console.log);
-    } else {
-        request(endpoint + `&key=${client.config.googleAPI}&q=${args.join(' ')}`, (error, response, body) => {
-            if (!error && response.statusCode === 200) {
-                const result = JSON.parse(body);
-                const videoId = result.items[0].id.videoId;
-                const title = result.items[0].snippet.title;
-                const link = youtube + videoId;
+    request(endpoint + `&key=${client.config.googleAPI}&q=${args.join(' ')}`, (error, response, body) => {
+        if (!error && response.statusCode === 200) {
+            const result = JSON.parse(body);
+            const title = result.items[0].snippet.title;
+            const link = youtube + result.items[0].id.videoId;
 
-                const song = {
-                    title,
-                    link
-                }
-
-                play(client, message, vchannel, song);
-
-                // vchannel
-                //     .join()
-                //     .then((connection) => {
-                //         const stream = ytdl(link, {
-                //             audioonly: true
-                //         });
-                //         const dispatcher = connection.playStream(stream);
-                //         dispatcher.setVolume(0.1);
-                //         console.dir(`[command:play] Playing ${title} (${videoId})`);
-                //         message.channel.send(`Playing ${title}`);
-                //         dispatcher.on('end', () => {
-                //             const song = client.queue[message.guild].pop();
-                //             vchannel.leave()
-                //         });
-                //     })
-                //     .catch(console.log);
+            const song = {
+                title,
+                link
             }
-        })
-    }
+
+            client.queue[message.guild].push(song);
+
+            play(client.queue[message.guild], message, vchannel, song);
+        }
+    })
 }
 
-function play(client, message, vchannel, song) {
+function play(queue, message, vchannel, song) {
     vchannel
         .join()
         .then((connection) => {
@@ -75,22 +45,16 @@ function play(client, message, vchannel, song) {
             console.dir(`[command:play] Playing ${song.title}`);
             message.channel.send(`Playing ${song.title}`);
             dispatcher.on('end', () => {
-                console.dir(client.queue[message.guild]);
-                if (!client.queue[message.guild] || Object.keys(client.queue[message.guild]).length === 0){
+                console.dir(queue);
+                if (queue.length < 1) {
                     message.channel.send("Queue is empty. Leaving channel");
-                    return vchannel.leave();   
+                    return vchannel.leave();
                 }
-                song = client.queue[message.guild].pop();
-                play(client, message, vchannel, song);
+                song = queue.pop();
+                play(queue, message, vchannel, song);
             });
         })
         .catch(console.log);
-}
-
-
-function validURL(s) {
-    var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-    return regexp.test(s);
 }
 
 exports.help = "Play a video from youtube. Either link or search query.";
