@@ -50,4 +50,4 @@ exports.run = (client, message, args) => {
 
 };
 
-exports.help = "Add a song to the queue.";
+exports.help = "Add/remove a song to the queue. Subcommands: `add`, `rm`, and `list`";
