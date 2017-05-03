@@ -10,6 +10,7 @@ exports.run = (client, message, args) => {
     let queue = client.queue[message.guild];
 
     if (args[0] === "add") {
+        args.splice(0, 1);
         if (args.length < 2)
             return message.channel.send(`Must provide a song name`);
 

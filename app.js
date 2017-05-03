@@ -31,7 +31,6 @@ client.on("message", message => {
     console.log(`[command]: '${command}' - ${message.author.username}`);
     commandFile.run(client, message, args);
   } catch (err) {
-    if (err == 'ProcessExit') process.exit();
     console.error(err);
   }
 });
