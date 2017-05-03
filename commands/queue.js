@@ -17,8 +17,7 @@ exports.run = (client, message, args) => {
             if (!error && response.statusCode === 200) {
                 const result = JSON.parse(body);
                 const title = result.items[0].snippet.title;
-                const link = youtube + result.items[0].id.videoId;
-                
+                const link = youtube + result.items[0].id.videoId;       
 
                 queue.push({
                     title,
