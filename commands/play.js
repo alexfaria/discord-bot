@@ -4,8 +4,8 @@ const endpoint = `https://www.googleapis.com/youtube/v3/search?part=snippet`;
 const youtube = "https://www.youtube.com/watch?v=";
 
 exports.run = (client, message, args) => {
-    if (!args || args.length < 1)
-        return message.channel.send(`Must provide a link or a song name`);
+    if (!args || args.length < 1 && client.queue[message.guild].length < 1)
+        return message.channel.send(`Must provide a link or a song name or add one to the queue.`);
 
     const vchannel = message.member.voiceChannel;
     if (!vchannel)
@@ -24,23 +24,30 @@ exports.run = (client, message, args) => {
         return;
     }
 
+    if (args.length < 1) {
 
-    request(endpoint + `&key=${client.config.googleAPI}&q=${args.join(' ')}`, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-            const result = JSON.parse(body);
-            const title = result.items[0].snippet.title;
-            const link = youtube + result.items[0].id.videoId;
+        const song = client.queue[message.guild].pop();
+        play(client.queue[message.guild], message, vchannel);
 
-            const song = {
-                title,
-                link
+    } else {
+
+        request(endpoint + `&key=${client.config.googleAPI}&q=${args.join(' ')}`, (error, response, body) => {
+            if (!error && response.statusCode === 200) {
+                const result = JSON.parse(body);
+                const title = result.items[0].snippet.title;
+                const link = youtube + result.items[0].id.videoId;
+
+                const song = {
+                    title,
+                    link
+                }
+
+                client.queue[message.guild].push(song);
+
+                play(client.queue[message.guild], message, vchannel);
             }
-
-            client.queue[message.guild].push(song);
-
-            play(client.queue[message.guild], message, vchannel);
-        }
-    })
+        })
+    }
 }
 
 function play(queue, message, vchannel) {
