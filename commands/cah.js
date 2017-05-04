@@ -17,11 +17,11 @@ exports.run = (client, message, args) => {
             
             const blackCard =  result.blackCards[ Math.floor(Math.random() * result.blackCards.length)];
             let whiteCards = [];
-            for(let i; i < blackCard.pick; i++)
+            for(let i = 0; i < blackCard.pick; i++)
                 whiteCards.push(result.whiteCards[ Math.floor(Math.random() * result.whiteCards.length)]);
  
             let content = `Question: ${blackCard.text}`;
-            for(let i; i < whiteCards.length; i++)
+            for(let i = 0; i < whiteCards.length; i++)
                 content += `\nAnswer: ${whiteCards[i]}`;
 
             message.channel.send('```\n' + content + '\n```');
