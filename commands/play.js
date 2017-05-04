@@ -26,7 +26,6 @@ exports.run = (client, message, args) => {
 
     if (args.length < 1) {
 
-        const song = client.queue[message.guild].pop();
         play(client.queue[message.guild], message, vchannel);
 
     } else {
