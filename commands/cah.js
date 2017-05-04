@@ -14,7 +14,18 @@ exports.run = (client, message, args) => {
     }, (error, response, body) => {
         if (!error && response.statusCode === 200) {
             const result = JSON.parse(body);
-            console.dir(result);
+            
+            const blackCard =  result.blackCards[ Math.floor(Math.random() * result.blackCards.length)];
+            let whiteCards = [];
+            for(let i; i < blackCard.pick; i++)
+                whiteCards.push(result.whiteCards[ Math.floor(Math.random() * result.whiteCards.length)]);
+ 
+            let content = `Question: ${blackCard.text}`;
+            for(let i; i < whiteCards.length; i++)
+                content += `\nAnswer: ${whiteCards[i]}`;
+
+            message.send('```\n' + content + '\n```');
+
         }
     });
 }
