@@ -22,7 +22,7 @@ exports.run = (client, message, args) => {
  
             let content = `Question: ${blackCard.text}`;
             for(let i = 0; i < whiteCards.length; i++)
-                content += `\nAnswer: ${whiteCards[i]}`;
+                content += `\nAnswer: ${decodeURI(whiteCards[i])}`;
 
             message.channel.send('```\n' + content + '\n```');
 
