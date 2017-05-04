@@ -24,7 +24,7 @@ exports.run = (client, message, args) => {
             for(let i; i < whiteCards.length; i++)
                 content += `\nAnswer: ${whiteCards[i]}`;
 
-            message.send('```\n' + content + '\n```');
+            message.channel.send('```\n' + content + '\n```');
 
         }
     });
